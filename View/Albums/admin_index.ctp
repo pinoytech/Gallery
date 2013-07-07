@@ -3,6 +3,7 @@
     <tr>
       <td>ID</td>
       <td>Name</td>
+      <td>Manage</td>
       <td>Status</td>
       <td>Created</td>
     </tr>
@@ -23,6 +24,16 @@
             echo $this->Html->link($album['Album']['name'], array(
               'controller' => 'albums',
               'action' => 'edit',
+              $album['Album']['id'],
+              'admin' => true
+            ));
+          ?>
+        </td>
+        <td>
+          <?php
+            echo $this->Html->link($album['Album']['name'], array(
+              'controller' => 'photos',
+              'action' => 'index',
               $album['Album']['id'],
               'admin' => true
             ));

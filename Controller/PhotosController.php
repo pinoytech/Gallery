@@ -15,7 +15,12 @@ class PhotosController extends GalleryAppController {
         return parent::isAuthorized($user);
     }
 
-    public function admin_index() {
+    public function admin_index($album_id = null) {
+
+        if (!$this->Photo->Album->exists($album_id)) {
+            throw new NotFoundException(__('Invalid Album'));
+        }
+
         $this->response->cache('-1 minute', '+2 week');
 
         $photos = $this->Photo->find('all', array(
@@ -29,6 +34,9 @@ class PhotosController extends GalleryAppController {
     }
 
     public function index($album_id = null) {
+        if (!$this->Photo->Album->exists($album_id)) {
+            throw new NotFoundException(__('Invalid Album'));
+        }
         $this->response->cache('-1 minute', '+2 week');
 
         $photos = $this->Photo->find('all', array(
@@ -44,11 +52,17 @@ class PhotosController extends GalleryAppController {
         $this->set('photos', $photos);
     }
 
-    public function admin_add() {
+    public function admin_add($album_id = null) {
+
+        if (!$this->Photo->Album->exists($album_id)) {
+            throw new NotFoundException(__('Invalid Album'));
+        }
+
         if ($this->request->is('post')) {
-            if ($this->Photo->save($this->request->data)) {
+            $this->request->data['Photo']['album_id'] = $album_id;
+            if ($this->Photo->saveAssociated($this->request->data)) {
                 $this->Session->setFlash('Your Photo has been saved.', 'alert-info');
-                $this->redirect(array('action' => 'admin_add'));
+                $this->redirect($this->here);
             }
         }
     }

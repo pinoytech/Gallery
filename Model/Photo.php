@@ -1,12 +1,13 @@
 <?php
 
 class Photo extends GalleryAppModel {
-    public $name = 'Album';
+    public $name = 'Photo';
+    public $belongsTo = array('Album');
     public $actsAs = array(
         'Upload.Upload' => array(
             'image' => array(
                 'fields' => array(
-                    'dir' => 'img_dir'
+                    'dir' => 'image_dir'
                 )
             )
         )
