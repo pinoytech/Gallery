@@ -1,4 +1,4 @@
-<div class="offset2 span8 margin-bottom body">
+<div class="offset1 span10 margin-bottom">
     <?php foreach ($albums as $album):?>
          <?php
             echo $this->Html->link($album['Album']['name'], array(
