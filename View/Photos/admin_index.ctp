@@ -1,5 +1,4 @@
 <div class="offset1 span10 margin-bottom">
-  <?php pr($this->request->params);?>
   <?php echo $this->Html->link('Add', array(
     'controller' => 'photos',
     'action' => 'add',
