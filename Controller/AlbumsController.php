@@ -20,12 +20,12 @@ class AlbumsController extends GalleryAppController {
 
         $albums = $this->Album->find('all', array(
             'limit' => 20,
-            'fields' => array('name', 'created'),
+            'fields' => array('id', 'name', 'status', 'created'),
             'order' => array(
                 'Album.id' => 'DESC'
             )
         ));
-        $this->set('album', $albums);
+        $this->set('albums', $albums);
     }
 
     public function index() {
@@ -35,13 +35,19 @@ class AlbumsController extends GalleryAppController {
             'conditions' => array(
                 'Album.status' => 'published'
             ),
+            'contain' => array(
+                'Photo' => array(
+                    'limit' => 1,
+                    'fields' => array('name', 'image'),
+                )
+            ),
             'limit' => 20,
-            'fields' => array('name', 'created'),
+            'fields' => array('id', 'name', 'created'),
             'order' => array(
                 'Album.id' => 'DESC'
             )
         ));
-        $this->set('album', $albums);
+        $this->set('albums', $albums);
     }
 
     public function admin_add() {
@@ -50,6 +56,22 @@ class AlbumsController extends GalleryAppController {
                 $this->Session->setFlash('Your Album has been saved.', 'alert-info');
                 $this->redirect(array('action' => 'admin_add'));
             }
+        }
+    }
+
+    public function admin_edit($id = null) {
+
+        if (!$this->Album->exists($id)) {
+            throw new NotFoundException(__('Invalid Album'));
+        }
+
+        if ($this->request->is('put') || $this->request->is('post')) {
+            if ($this->Album->save($this->request->data)) {
+                $this->Session->setFlash('Your Album has been saved.', 'alert-info');
+                $this->redirect($this->here);
+            }
+        } else {
+            $this->request->data = $this->Album->findById($id);
         }
     }
 }

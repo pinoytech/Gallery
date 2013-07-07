@@ -4,8 +4,9 @@
             echo $this->Html->link($album['Album']['name'], array(
             'controller' => 'albums',
             'action' => 'view',
-            $post['Post']['id']
+            $album['Album']['id']
         ));?>
-        <?php echo $post['Album']['id'];?>
+        <?php pr($album);?>
+        <?php echo $album['Album']['id'];?>
     <?php endforeach; ?>
 </div>
